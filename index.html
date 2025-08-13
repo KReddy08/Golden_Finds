@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Senior Discounts Finder</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        input, select, button { padding: 8px; margin: 5px; }
+        .result { margin-top: 10px; padding: 10px; border: 1px solid #ccc; border-radius: 5px; }
+    </style>
+</head>
+<body>
+    <h1>Senior Discounts & Opportunities Finder</h1>
+
+    <label>Location:</label>
+    <input type="text" id="location" placeholder="e.g., New York">
+
+    <label>Activity Type:</label>
+    <input type="text" id="activity" placeholder="e.g., museums">
+
+    <button onclick="searchOpportunities()">Search</button>
+
+    <h2>Results:</h2>
+    <div id="results"></div>
+
+    <script>
+        async function searchOpportunities() {
+            const location = document.getElementById("location").value.trim();
+            const activity = document.getElementById("activity").value.trim();
+            const query = encodeURIComponent(`senior discounts ${activity} ${location}`);
+
+            const url = `https://api.duckduckgo.com/?q=${query}&format=json&pretty=1`;
+
+            try {
+                const response = await fetch(url);
+                const data = await response.json();
+
+                const resultsDiv = document.getElementById("results");
+                resultsDiv.innerHTML = "";
+
+                if (data.RelatedTopics.length === 0) {
+                    resultsDiv.innerHTML = "<p>No results found. Try different keywords.</p>";
+                    return;
+                }
+
+                data.RelatedTopics.forEach(item => {
+                    if (item.Text && item.FirstURL) {
+                        const div = document.createElement("div");
+                        div.classList.add("result");
+                        div.innerHTML = `<a href="${item.FirstURL}" target="_blank">${item.Text}</a>`;
+                        resultsDiv.appendChild(div);
+                    }
+                });
+
+            } catch (error) {
+                console.error("Error fetching results:", error);
+            }
+        }
+    </script>
+</body>
+</html>

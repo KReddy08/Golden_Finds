@@ -139,8 +139,8 @@
 
       const location = document.getElementById("location").value.trim();
       const activity = document.getElementById("activity").value;
-      const date = document.getElementById("date").value; // YYYY-MM
-      const accessible = document.getElementById("accessible").value; // "" or "wheelchair accessible"
+      const date = document.getElementById("date").value; 
+      const accessible = document.getElementById("accessible").value; 
 
       if (!location || !activity) {
         errorDiv.textContent = "Please enter both location and activity.";
@@ -149,7 +149,7 @@
         return;
       }
 
-      // Build dynamic query
+      
       let query = `${activity} in ${location} senior opportunities`;
       if (accessible) query += ` "${accessible}"`;
       if (date) {
@@ -179,7 +179,7 @@
           return;
         }
 
-        // Client-side keyword filtering
+        
         let filteredItems = data.items;
         if (date) {
           const monthNames = ["January","February","March","April","May","June","July","August","September","October","November","December"];
@@ -229,4 +229,5 @@
   </script>
 </body>
 </html>
+
 
